@@ -1,0 +1,11 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+target 'YTKNetworkExtension_Example', :exclusive => true do
+  pod "YTKNetworkExtension", :path => "../"
+end
+
+target 'YTKNetworkExtension_Tests', :exclusive => true do
+  pod "YTKNetworkExtension", :path => "../"
+
+  
+end
