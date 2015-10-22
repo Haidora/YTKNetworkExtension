@@ -17,6 +17,7 @@
 
 - (void)handleRequestResult:(AFHTTPRequestOperation *)operation;
 - (void)addOperation:(YTKBaseRequest *)request;
+- (BOOL)checkResult:(YTKBaseRequest *)request;
 
 @end
 
@@ -30,6 +31,23 @@
                    usingBlock:^(id<AspectInfo> info, YTKBaseRequest *request) {
                      [((YTKNetworkAgent *)[info instance])hd_addRequest:request];
                    } error:NULL];
+
+    NSError *error;
+    [self aspect_hookSelector:@selector(checkResult:)
+                  withOptions:AspectPositionAfter
+                   usingBlock:^(id<AspectInfo> info, YTKBaseRequest *request) {
+                     BOOL result = NO;
+                     [info.originalInvocation getReturnValue:&result];
+                     if (result)
+                     {
+                         result = [request hd_validate];
+                         [info.originalInvocation setReturnValue:&result];
+                     }
+                   } error:&error];
+    if (error)
+    {
+        NSLog(@"%@", error);
+    }
 }
 
 - (void)hd_addRequest:(YTKBaseRequest *)request

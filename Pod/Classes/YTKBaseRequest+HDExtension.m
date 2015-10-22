@@ -20,4 +20,9 @@
     return nil;
 }
 
+- (BOOL)hd_validate
+{
+    return YES;
+}
+
 @end
